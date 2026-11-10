@@ -22,14 +22,16 @@ class Product extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'category_id',
-        'name',
-        'description',
-        'price',
-        'image',
-        'status',
-    ];
+   protected $fillable = [
+    'category_id',
+    'name',
+    'product_code',
+    'description',
+    'price',
+    'has_sizes',
+    'image',
+    'status',
+];
 
     /**
      * The attributes that should be cast.
@@ -47,4 +49,8 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function variants()
+{
+    return $this->hasMany(\App\Models\ProductVariant::class);
+}
 }

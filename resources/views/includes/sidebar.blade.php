@@ -23,12 +23,6 @@
                 'icon' => 'products',
             ],
             [
-                'label' => 'Categories',
-                'url' => '/admin/categories',
-                'active' => 'admin/categories*',
-                'icon' => 'categories',
-            ],
-            [
                 'label' => 'Inventory',
                 'url' => '/admin/inventory',
                 'active' => 'admin/inventory*',
@@ -116,6 +110,12 @@
     ];
 
     $menuItems = $navigation[$role] ?? $navigation['user'];
+
+    $homeUrl = match ($role) {
+        'admin' => '/admin/dashboard',
+        'staff' => '/staff/dashboard',
+        default => '/menu',
+    };
 @endphp
 
 {{-- Mobile backdrop --}}
@@ -137,8 +137,7 @@
     {{-- Brand --}}
     <div class="flex h-20 items-center justify-between border-b border-white/10 px-5">
 
-        <a href="{{ $role === 'admin' ? '/admin/dashboard' : ($role === 'staff' ? '/staff/dashboard' : '/menu') }}"
-           class="flex min-w-0 items-center gap-3">
+        <a href="{{ $homeUrl }}" class="flex min-w-0 items-center gap-3">
 
             <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#C99A62] text-[#211812]">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -218,6 +217,7 @@
             <a
                 href="{{ url($item['url']) }}"
                 title="{{ $item['label'] }}"
+                @if($isActive) aria-current="page" @endif
                 class="group flex items-center gap-3 rounded-xl px-3 py-3
                        transition-all duration-200
                        {{ $isActive
@@ -257,17 +257,6 @@
                                 <path d="m12 2 9 5-9 5-9-5 9-5Z"/>
                                 <path d="m3 12 9 5 9-5"/>
                                 <path d="m3 17 9 5 9-5"/>
-                            </svg>
-                            @break
-
-                        @case('categories')
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="7" height="7" rx="1"/>
-                                <rect x="14" y="3" width="7" height="7" rx="1"/>
-                                <rect x="14" y="14" width="7" height="7" rx="1"/>
-                                <rect x="3" y="14" width="7" height="7" rx="1"/>
                             </svg>
                             @break
 

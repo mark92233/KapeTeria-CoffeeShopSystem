@@ -11,16 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->float('price', 10, 2);
-            $table->string('image')->nullable();
-            $table->enum('status', ['available', 'unavailable'])->default('available');
-        });
+       Schema::create('products', function (Blueprint $table) {
+    $table->id();
+
+    // Relationships
+    $table->foreignId('category_id')
+        ->constrained()
+        ->restrictOnDelete();
+
+    // Product Information
+    $table->string('name')->unique();
+    $table->text('description');
+
+    // Pricing
+    $table->decimal('price', 10, 2)->nullable();
+    $table->boolean('has_sizes')->default(false);
+
+    // Product Image
+    $table->string('image');
+
+    // Availability
+    $table->enum('status', ['available', 'unavailable'])
+        ->default('available');
+
+    $table->timestamps();
+});
     }
 
     /**
